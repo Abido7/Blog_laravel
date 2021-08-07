@@ -1,0 +1,6 @@
+    users (name , bio)
+    following (user_id,following_id)
+    posts (caption , user_id)
+    imgs (img , imageable_id , imageable_type )
+    likes (likeable_id , likeable_type )
+    comments (content, likeable_id , likeable_type )
