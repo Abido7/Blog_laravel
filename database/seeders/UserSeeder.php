@@ -18,13 +18,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(4)->create()->each(function ($user) {
-
-            Image::factory()->create([
-                'img' => "users/$user->id.jpg",
-                "imageable_id" => $user->id,
-                "imageable_type" => $user::class,
-            ]);
-        });
+        User::factory()->count(4)->create();
     }
 }

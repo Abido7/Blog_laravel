@@ -27,9 +27,10 @@ class UserFactory extends Factory
         $i++;
         return [
             'name' => $this->faker->name(),
+            'img' => "users/$i.jpg",
             'email' => "a@a$i.com",
             'bio' => $this->faker->text(100),
-            'password' => Hash::make(123456)
+            'password' => Hash::make(123456789)
         ];
     }
 

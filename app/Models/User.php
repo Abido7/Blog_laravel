@@ -29,7 +29,6 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->withTimestamps();
     }
 
-
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -40,9 +39,9 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function images()
+    public function image()
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
 
