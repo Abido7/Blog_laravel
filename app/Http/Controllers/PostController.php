@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function postDetails($id)
     {
-        $data['post'] = Post::with(['user', 'comments'])->findOrFail($id);
+        $data['post'] = Post::with(['user', 'comments', 'images'])->findOrFail($id);
         $data['user'] = $data['post']->user;
         return view('post.show-post')->with($data);
     }
@@ -55,6 +55,21 @@ class PostController extends Controller
         return redirect(url("/profile"));
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:posts,id',
+            'caption' => 'required|string',
+        ]);
+
+        $post = Post::findOrFail($request->id);
+        $post->update([
+            'caption' => $request->caption
+        ]);
+        $request->session()->flash('msg', 'Post Updated Successfully');
+        return back();
+    }
+
     public function delete(Request $request)
     {
         $request->validate([
@@ -76,8 +91,7 @@ class PostController extends Controller
             $post->images()->delete($post);
             $post->delete();
         }
-        // dd($imgPath->img);
-        // dd($request->all());
+
         return back();
     }
 }

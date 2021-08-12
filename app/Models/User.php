@@ -21,12 +21,13 @@ class User extends Authenticatable
         'email',
         'password',
         'bio',
+        'img',
     ];
 
 
     public function followings()
     {
-        return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->withTimestamps();
+        return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->withPivot('is_following')->withTimestamps();
     }
 
     public function posts()
@@ -39,10 +40,10 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function image()
-    {
-        return $this->morphOne(Image::class, 'imageable');
-    }
+    // public function image()
+    // {
+    //     return $this->morphOne(Image::class, 'imageable');
+    // }
 
 
 

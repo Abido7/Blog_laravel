@@ -11,12 +11,8 @@ class MainPageController extends Controller
 {
     public function index()
     {
-        $currentUserId = Auth::user()->id;
-        $data['followings'] = User::findOrFail($currentUserId)->followings;
-        // dd($data['followings']);
-        // $data['posts'] = Post::with('comments')->whereIn('user_id', $data['followings']);
-
-        // dd($data['posts']);
+        $user = Auth::user();
+        $data['followings'] = $user->followings()->with(['posts.images', 'posts.comments'])->get();
         return view('main')->with($data);
     }
 }

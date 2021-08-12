@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\PostController;
@@ -19,12 +20,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainPageController::class, 'index'])->middleware('auth');;
 Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth');
-Route::get('followings/{user}', [ProfileController::class, 'followings'])->middleware(['auth', "Isprivate"]);
-Route::get('/user/{user}', [ProfileController::class, 'showUser']);
+Route::patch('/profile/update', [ProfileController::class, 'update'])->middleware('auth');
+Route::get('followings/{user}', [ProfileController::class, 'followings'])->middleware('auth');
+Route::get('/user/{id}', [ProfileController::class, 'showUser'])->middleware('cantSeeCurrentAsUser');
+Route::delete('unfollow', [ProfileController::class, 'unfollow'])->middleware('auth');
+Route::post('/follow', [ProfileController::class, 'follow'])->middleware('auth');
+
 Route::get('/post/{id}', [PostController::class, 'postDetails'])->middleware('auth');
 Route::post('/post/store', [PostController::class, 'store'])->middleware('auth');
+Route::patch('/post/update', [PostController::class, 'update'])->middleware('auth');
 Route::delete('/post/delete', [PostController::class, 'delete'])->middleware('auth');
-// Route::get('/post/comments/{comment}', [PostController::class, 'showComment'])->middleware('auth');
+Route::post('/add-comment/{id}', [CommentController::class, 'addComment'])->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
