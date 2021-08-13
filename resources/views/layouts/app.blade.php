@@ -100,8 +100,6 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
-
             <form action="{{ url('/follow') }}" method="POST" id="follow-form">
                 @csrf
                 <input type="hidden" name="follow" id="hidden-follow-input">
@@ -111,6 +109,9 @@
                 @method('delete')
                 <input type="hidden" name="unfollowed" id="hidden-id">
             </form>
+            @yield('content')
+
+
 
 
             <div class="add-modal">

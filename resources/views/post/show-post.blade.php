@@ -3,13 +3,10 @@
 @section('content')
 
     <div class="container">
+
         <div class="row">
             <div class="col-12 ">
-
-                {{-- <form action="{{ url('add-Comment') }}" style="display:none" method="POST" id="comment-post">
-                    @csrf
-                </form> --}}
-                <div class="card w-100  m-3">
+                <div class="card w-100  mt-3">
                     <div class="card-header py-1 d-flex flex-row align-items-center">
                         <div class="col-6">
                             <a class="text-decoration-none d-flex flex-row justify-content-cnter align-items-center"
@@ -18,7 +15,6 @@
                                 <h4 class="mx-1">{{ $user->name }}</h4>
                             </a>
                         </div>
-
                     </div>
                     <div class="card-title m-0">
                         <div class="row">
@@ -31,9 +27,34 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-body py-0">
+                        {{-- Like form --}}
+                        <form action="{{ url("post/like/$post->id") }}" style="display:none" method="POST" id="like-post">
+                            @csrf
+                        </form>
+                        <form action="{{ url("post/dislike/$post->id") }}" style="display:none" method="POST"
+                            id="dislike-post">
+                            @csrf
+                        </form>
                         <p class="card-text">{{ $post->caption }}.</p>
+                        <div class="info  d-flex align-items-center justify-content-start">
+
+                            @if (session()->get('islike') == 1)
+                                <button type="submit" class="btn text-info" form="dislike-post">
+                                    disLike
+                                </button>
+                            @elseif(session()->get('islike') == 0)
+                                <button type="submit" class="btn text-info" form="like-post">
+                                    like
+                                </button>
+                            @endif
+
+                            <p class="mr-2 my-0">{{ count($post->Likes) }} likes</p>
+                            <p class=" my-0">{{ count($post->comments) }} Comments</p>
+                        </div>
                         <div class="form-group d-flex flex-row align-items-center justify-content-center">
+                            {{-- comment form --}}
                             <form action="{{ url("/add-comment/$post->id") }}" style="display:none" method="POST"
                                 enctype="multipart/form-data" id="comment-post">
                                 @csrf
@@ -69,9 +90,7 @@
                                         class=" text-decoration-none text-center text-light m-0">
                                         {{ $comment->user->name }}</a>
                                 </th>
-                                <th>
 
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +101,6 @@
                                         @forelse ($comment->images as $img)
                                             <img class="w-25 rounded img-fluid py-2"
                                                 src="{{ asset("uploads/$img->img") }}" alt="">
-
                                         @empty
                                         @endforelse
                                     </div>
@@ -90,10 +108,11 @@
                             </tr>
                             <tr>
                                 <td class="bg-secondary text-white">
-                                    <p class="mx-3">
+                                    <p class="mx-3 my-0 p-0">
                                         <?php $totalDuration = \Carbon\Carbon::parse($comment->created_at)->DiffInMinutes(now()); ?>
                                         {{ Carbon\CarbonInterval::minutes($totalDuration)->cascade()->forHumans() }}
                                     </p>
+
                                 </td>
                             </tr>
                         </tbody>
@@ -103,5 +122,6 @@
         </div>
     </div>
     </div>
+
     </div>
 @endsection

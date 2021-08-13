@@ -17,6 +17,11 @@
                             Following ({{ $user->followings->count() }})
                         </a>
                     </p>
+                    {{-- <p class="mx-1">
+                        <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
+                            Followers ({{ $followers }})
+                        </a>
+                    </p> --}}
                 </div>
             </div>
         </div>
@@ -85,8 +90,9 @@
                                         <a class="text-light text-decoration-none" href="{{ url("post/$post->id") }}">
                                             <p class="mx-3">{{ $post->comments[0]->body }}</p>
                                         </a>
-                                        <p class="mx-3">
-                                            {{ \Carbon\Carbon::parse($post->comments[0]->created_at)->diffForHumans(now()) }}
+                                        <p class="mx-3 my-0 p-0">
+                                            <?php $totalDuration = \Carbon\Carbon::parse($post->comments[0]->created_at)->DiffInMinutes(now()); ?>
+                                            {{ Carbon\CarbonInterval::minutes($totalDuration)->cascade()->forHumans() }}
                                         </p>
                                     </div>
                                 </div>

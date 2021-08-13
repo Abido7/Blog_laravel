@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MainPageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +23,7 @@ Route::get('/', [MainPageController::class, 'index'])->middleware('auth');;
 Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth');
 Route::patch('/profile/update', [ProfileController::class, 'update'])->middleware('auth');
 Route::get('followings/{user}', [ProfileController::class, 'followings'])->middleware('auth');
+Route::get('followers/{user}', [ProfileController::class, 'followers'])->middleware('auth');
 Route::get('/user/{id}', [ProfileController::class, 'showUser'])->middleware('cantSeeCurrentAsUser');
 Route::delete('unfollow', [ProfileController::class, 'unfollow'])->middleware('auth');
 Route::post('/follow', [ProfileController::class, 'follow'])->middleware('auth');
@@ -31,6 +33,9 @@ Route::post('/post/store', [PostController::class, 'store'])->middleware('auth')
 Route::patch('/post/update', [PostController::class, 'update'])->middleware('auth');
 Route::delete('/post/delete', [PostController::class, 'delete'])->middleware('auth');
 Route::post('/add-comment/{id}', [CommentController::class, 'addComment'])->middleware('auth');
+Route::post('post/like/{id}', [LikeController::class, 'addLike'])->middleware('auth');
+Route::post('post/dislike/{id}', [LikeController::class, 'disLike'])->middleware('auth');
+Route::post('/replay', [CommentController::class, 'replay'])->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

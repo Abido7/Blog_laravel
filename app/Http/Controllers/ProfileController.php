@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -12,10 +13,11 @@ class ProfileController extends Controller
 
     public function index()
     {
-
+        // dd();
         $data = [
             'user' => Auth::user(),
             'posts' => Auth::user()->posts()->with(['images', 'comments'])->orderBy('id', 'desc')->get(),
+            'followers' => DB::table('followings')->distinct()->select('user_id')->distinct()->where('following_id', '=', Auth::user()->id)->count()
         ];
         return view('profile.index')->with($data);
     }
@@ -25,8 +27,6 @@ class ProfileController extends Controller
     {
         $data['user'] = User::with(['posts', 'posts.images', 'posts.comments'])->findOrFail($id);
         $data['authFollowing'] = Auth::user()->followings()->pluck('following_id')->toArray();
-
-        // $data['isFollowing'] = Auth::user()->followings()->select('is_following')->wherePivot('following_id', $id)->first();
         $data['posts'] = $data['user']->posts;
         return view('profile.show')->with($data);
     }
@@ -52,15 +52,13 @@ class ProfileController extends Controller
             dd($request->img);
         }
         $request->session()->flash('msg', 'Your Info Updated Successfully');
-        // dd($request->all());
-        //bio, img
         return back();
     }
 
     public function follow(Request $request)
     {
-        $t = $request->validate([
-            'follow' => "required|exists:users,id|unique:followings,user_id,$request->follow",
+        $request->validate([
+            'follow' => "required|exists:users,id",
         ]);
         Auth::user()->followings()->attach($request->follow);
         return back();
@@ -81,7 +79,20 @@ class ProfileController extends Controller
         $data['user'] = $user;
         $data['followings'] = $user->followings()->orderBy('created_at', "DESC")->get();
         $data['authFollowing'] = Auth::user()->followings()->pluck('following_id')->toArray();
-
         return view('profile.followings')->with($data);
+    }
+
+
+    public function followers(User $user)
+    {
+        // dd($data['followers']);
+        $data['user'] = $user;
+        $followersId = DB::table('followings')->distinct()->select('*')
+            ->distinct()->where('following_id', '=', $user->id)
+            ->pluck('user_id')->toArray();
+        $data['followers'] = User::whereIn('id', $followersId)->get();
+        // dd($authFollowers);
+
+        return view('profile.followers')->with($data);
     }
 }

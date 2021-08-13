@@ -61,8 +61,9 @@
                                             <p class="mx-3 p-0">{{ $post->comments[0]->body }}</p>
                                         </a>
                                     </a>
-                                    <p class="mx-3 text-dark">
-                                        {{ \Carbon\Carbon::parse($post->comments[0]->created_at)->diffForHumans(now()) }}
+                                    <p class="mx-3 my-0 p-0">
+                                        <?php $totalDuration = \Carbon\Carbon::parse($post->comments[0]->created_at)->DiffInMinutes(now()); ?>
+                                        {{ Carbon\CarbonInterval::minutes($totalDuration)->cascade()->forHumans() }}
                                     </p>
                                 </div>
                             @else

@@ -23,11 +23,18 @@
                         <div class="bg-secondary  text-light rounded">
                             <p class="p-2">Bio</p>
                             <p class=" px-4">{{ $user->bio }}</p>
-                            <p class="mx-1">
-                                <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
-                                    Following ({{ $user->followings->count() }})
-                                </a>
-                            </p>
+                            <div class="d-flex justify-content-start">
+                                <p class="mx-2">
+                                    <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
+                                        Following ({{ $user->followings->count() }})
+                                    </a>
+                                </p>
+                                <p class="mx-2">
+                                    <a class="text-light text-decoration-none" href="{{ url("followers/$user->id") }}">
+                                        Followers ({{ $followers }})
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,8 +106,9 @@
                                         <p class="mx-3 p-0">{{ $post->comments[0]->body }}</p>
                                     </a>
                                 </a>
-                                <p class="mx-3 text-dark">
-                                    {{ \Carbon\Carbon::parse($post->comments[0]->created_at)->diffForHumans(now()) }}
+                                <p class="mx-3 my-0 p-0">
+                                    <?php $totalDuration = \Carbon\Carbon::parse($post->comments[0]->created_at)->DiffInMinutes(now()); ?>
+                                    {{ Carbon\CarbonInterval::minutes($totalDuration)->cascade()->forHumans() }}
                                 </p>
                             </div>
 
