@@ -42,10 +42,12 @@
 
                             @if (session()->get('islike') == 1)
                                 <button type="submit" class="btn text-info" form="dislike-post">
-                                    disLike
+                                    <i class="far fa-thumbs-up"></i>
+                                    like
                                 </button>
                             @elseif(session()->get('islike') == 0)
-                                <button type="submit" class="btn text-info" form="like-post">
+                                <button type="submit" class="btn text-secondary" form="like-post">
+                                    <i class="far fa-thumbs-up"></i>
                                     like
                                 </button>
                             @endif
@@ -90,7 +92,6 @@
                                         class=" text-decoration-none text-center text-light m-0">
                                         {{ $comment->user->name }}</a>
                                 </th>
-
                             </tr>
                         </thead>
                         <tbody>

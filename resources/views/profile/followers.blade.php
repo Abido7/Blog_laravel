@@ -35,7 +35,6 @@
                                             Follow
                                         </button>
                                     @endif
-
                                 @endif
                             </div>
                         </div>

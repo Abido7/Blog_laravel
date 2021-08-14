@@ -26,7 +26,8 @@ class ProfileController extends Controller
     public function showUser($id)
     {
         $data['user'] = User::with(['posts', 'posts.images', 'posts.comments'])->findOrFail($id);
-        $data['authFollowing'] = Auth::user()->followings()->pluck('following_id')->toArray();
+        $data['followers'] = DB::table('followings')->distinct()->select('user_id')->distinct()->where('following_id', '=', $id)->count();
+        $data['authFollowings'] = Auth::user()->followings()->pluck('following_id')->toArray();
         $data['posts'] = $data['user']->posts;
         return view('profile.show')->with($data);
     }
@@ -78,7 +79,7 @@ class ProfileController extends Controller
     {
         $data['user'] = $user;
         $data['followings'] = $user->followings()->orderBy('created_at', "DESC")->get();
-        $data['authFollowing'] = Auth::user()->followings()->pluck('following_id')->toArray();
+        $data['authFollowings'] = Auth::user()->followings()->pluck('following_id')->toArray();
         return view('profile.followings')->with($data);
     }
 
@@ -90,6 +91,7 @@ class ProfileController extends Controller
         $followersId = DB::table('followings')->distinct()->select('*')
             ->distinct()->where('following_id', '=', $user->id)
             ->pluck('user_id')->toArray();
+        $data['authFollowings'] = Auth::user()->followings()->pluck('following_id')->toArray();
         $data['followers'] = User::whereIn('id', $followersId)->get();
         // dd($authFollowers);
 

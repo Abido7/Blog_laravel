@@ -12,16 +12,18 @@
                 <div class="bg-secondary  text-light rounded">
                     <p class="p-2">Bio</p>
                     <p class=" px-4">{{ $user->bio }}</p>
-                    <p class="mx-1">
-                        <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
-                            Following ({{ $user->followings->count() }})
-                        </a>
-                    </p>
-                    {{-- <p class="mx-1">
-                        <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
-                            Followers ({{ $followers }})
-                        </a>
-                    </p> --}}
+                    <div class="d-flex justify-content-start">
+                        <p class="mx-1">
+                            <a class="text-light text-decoration-none" href="{{ url("followings/$user->id") }}">
+                                Following ({{ $user->followings->count() }})
+                            </a>
+                        </p>
+                        <p class="mx-2">
+                            <a class="text-light text-decoration-none" href="{{ url("followers/$user->id") }}">
+                                Followers ({{ $followers }})
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +39,7 @@
                                 <h4 class="mx-1">{{ $user->name }}</h4>
                             </div>
                             <div class="col-6 d-flex flex-row justify-content-end align-items-center">
-                                @if (in_array($user->id, $authFollowing))
+                                @if (in_array($user->id, $authFollowings))
 
                                     <button type="button" form="unfollow-form" class="btn btn-secondary"
                                         onclick="unfollow(<?= $user->id ?>);">

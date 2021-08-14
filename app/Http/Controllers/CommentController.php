@@ -31,25 +31,25 @@ class CommentController extends Controller
         return back();
     }
 
-    public function replay(Request $request)
-    {
-        dd($request->all());
+    // public function replay(Request $request)
+    // {
+    //     // dd($request->all());
 
-        $request->validate([
-            'comment_id' => 'required|exists:comments,id',
-            'comment' => 'required|string|max:2000',
-            'img' => 'nullable|mimes:png,jpg,jpeg,gif|max:2048'
-        ]);
+    //     $request->validate([
+    //         'comment_id' => 'required|exists:comments,id',
+    //         'comment' => 'required|string|max:2000',
+    //         'img' => 'nullable|mimes:png,jpg,jpeg,gif|max:2048'
+    //     ]);
 
-        $comment = Comment::findorFail($request->comment_id);
-        $user = Auth::user();
-        if ($request->hasFile('img')) {
-            $comment->Comments()->create(['user_id' => $user->id, 'body' => $request->comment]);
-            $imgPath = Storage::disk('uploads')->put('comments', $request->img);
-            $comment->images()->create(['img' => $imgPath, $comment]);
-        } else {
-            $comment->Comments()->create(['user_id' => $user->id, 'body' => $request->comment]);
-        }
-        return back();
-    }
+    //     $comment = Comment::findorFail($request->comment_id);
+    //     $user = Auth::user();
+    //     if ($request->hasFile('img')) {
+    //         $comment->Comments()->create(['user_id' => $user->id, 'body' => $request->comment]);
+    //         $imgPath = Storage::disk('uploads')->put('comments', $request->img);
+    //         $comment->images()->create(['img' => $imgPath, $comment]);
+    //     } else {
+    //         $comment->Comments()->create(['user_id' => $user->id, 'body' => $request->comment]);
+    //     }
+    //     return back();
+    // }
 }
