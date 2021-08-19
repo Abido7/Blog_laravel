@@ -31,25 +31,18 @@ Route::middleware(['auth'])->group(
         Route::delete('unfollow', [ProfileController::class, 'unfollow']);
         Route::post('/follow', [ProfileController::class, 'follow']);
 
-
-
-        Route::prefix('/admin')->middleware(['isAdmin'])->group(function () {
-            Route::patch('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
-        });
-
-
         Route::resource('post', PostController::class)->only(['store', 'update', 'destroy', 'show']);
 
         Route::post('/add-comment/{id}', [CommentController::class, 'store']);
         Route::post('post/like', [LikeController::class, 'like']);
         Route::delete('post/dislike/{post}', [LikeController::class, 'unlike']);
     }
-
 );
 
+Route::prefix('/dashboard')->middleware(['isAdmin'])->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('dashboard');
+    Route::patch('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
+});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__ . '/auth.php';
