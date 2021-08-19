@@ -14,11 +14,11 @@
                     @method('delete')
                     <input type="hidden" name="unfollowed" id="hidden-id">
                 </form> --}}
-                @forelse ($followings as $member)
+                @forelse ($user->followings as $member)
                     <div class="card mt-2">
                         <div class=" card-header d-flex flex-row align-items-center ">
                             <div class="col-6 ">
-                                <a href="{{ url("user/$member->id") }}"
+                                <a href="{{ url("profile/$member->id") }}"
                                     class="text-decoration-none d-flex flex-row align-items-center">
                                     <img width="50" class="rounded-circle" src="{{ asset("uploads/$member->img") }}"
                                         alt="">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-6 d-flex flex-row justify-content-end align-items-center">
 
-                                @if (in_array($member->id, $authFollowing))
+                                @if (in_array($member->id, $authFollowings))
 
                                     <button type="button" form="unfollow-form" class="btn btn-secondary"
                                         onclick="unfollow(<?= $member->id ?>);">

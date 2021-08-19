@@ -4,3 +4,23 @@
     imgs (img , imageable_id , imageable_type )
     likes (likeable_id , likeable_type )
     comments (content, likeable_id , likeable_type )
+
+
+user to activate -> deactivate ui and dashboard 
+dashboard 
+ user to admin 
+ admin post from user
+ user status (block or deactive)
+ if block make exciption
+
+in dashboard home
+today ->apex chart package (
+    user count
+    post count
+    likes count
+    comments count
+)
+top posts max likes 
+how user joind today
+user select country when register -----------------------------done
+after register redrict to edit pic and bio --------------------done

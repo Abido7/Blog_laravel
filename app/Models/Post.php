@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\Likeable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cesargb\Database\Support\CascadeDelete;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Likeable, CascadeDelete;
+
     protected $fillable = [
         'caption',
         'user_id',
     ];
+
+    protected $cascadeDeleteMorph = ['images', 'comments', 'likes'];
 
     public function comments()
     {
@@ -24,15 +29,22 @@ class Post extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
     }
 
-
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->where('status', '=', 1);
+    }
+
+    public function latestComment()
+    {
+        return $this->morphOne(Comment::class, 'commentable');
+    }
+    public function deletedComment()
+    {
+        return $this->morphOne(Comment::class, 'commentable');
     }
 }

@@ -22,12 +22,20 @@ class User extends Authenticatable
         'password',
         'bio',
         'img',
+        'role_id',
+        'country_id',
+        'status'
     ];
 
 
     public function followings()
     {
-        return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->withPivot('is_following')->withTimestamps();
+        return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->where('status', '=', 1)->withPivot('is_following')->withTimestamps()->orderByPivot('id', 'DESC');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followings', "following_id", 'user_id')->where('status', '=', 1)->withTimestamps();
     }
 
     public function posts()
@@ -44,7 +52,15 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
     /**
      * The attributes that should be hidden for arrays.
      *

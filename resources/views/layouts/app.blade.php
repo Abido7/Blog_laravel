@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,8 +20,8 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
 
-    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -125,7 +125,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form id="modal-form" method="POST" action="{{ url('post/store') }}"
+                                <form id="modal-form" method="POST" action="{{ url('post') }}"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="card-body">
@@ -166,6 +166,9 @@
         </main>
     </div>
 
+
+    <script src="{{ asset('js/app.js') }}"></script>
+
     <script>
         function addFollow(id) {
             document.getElementById('hidden-follow-input').setAttribute('value', id);
@@ -178,6 +181,7 @@
             document.getElementById('unfollow-form').submit();
         }
     </script>
+
 </body>
 
 </html>

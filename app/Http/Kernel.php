@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'isAdmin' => \App\Http\Middleware\isAdmin::class,
         'cantSeeCurrentAsUser' => \App\Http\Middleware\CantSeeCurrentAsUser::class,
         'Isprivate' => \App\Http\Middleware\IsPrivate::class,
         'auth' => \App\Http\Middleware\Authenticate::class,

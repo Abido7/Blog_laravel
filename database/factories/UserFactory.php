@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'img' => "users/$i.jpg",
             'email' => "a@a$i.com",
+            'role_id' => $this->faker->numberBetween(1, 2),
+            'country_id' => $this->faker->numberBetween(1, 4),
             'bio' => $this->faker->text(100),
             'password' => Hash::make(123456789)
         ];

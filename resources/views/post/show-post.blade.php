@@ -5,12 +5,15 @@
     <div class="container">
 
         <div class="row">
+            @php
+                $user = $post->user;
+            @endphp
             <div class="col-12 ">
                 <div class="card w-100  mt-3">
                     <div class="card-header py-1 d-flex flex-row align-items-center">
                         <div class="col-6">
                             <a class="text-decoration-none d-flex flex-row justify-content-cnter align-items-center"
-                                href="{{ url("user/$user->id") }}">
+                                href="{{ url("profile/$user->id") }}">
                                 <img width="50" class="rounded-circle" src="{{ asset("uploads/$user->img") }}" alt="">
                                 <h4 class="mx-1">{{ $user->name }}</h4>
                             </a>
@@ -30,22 +33,25 @@
 
                     <div class="card-body py-0">
                         {{-- Like form --}}
-                        <form action="{{ url("post/like/$post->id") }}" style="display:none" method="POST" id="like-post">
+                        <form action="{{ url('post/like') }}" style="display:none" method="POST" id="like-post">
                             @csrf
+                            <input type="text" name="postId" type="hidden" value="{{ $post->id }}">
                         </form>
                         <form action="{{ url("post/dislike/$post->id") }}" style="display:none" method="POST"
                             id="dislike-post">
                             @csrf
+                            @method('delete')
                         </form>
+
                         <p class="card-text">{{ $post->caption }}.</p>
                         <div class="info  d-flex align-items-center justify-content-start">
 
-                            @if (session()->get('islike') == 1)
+                            @if ($post->isLiked(Auth::user()))
                                 <button type="submit" class="btn text-info" form="dislike-post">
                                     <i class="far fa-thumbs-up"></i>
                                     like
                                 </button>
-                            @elseif(session()->get('islike') == 0)
+                            @else
                                 <button type="submit" class="btn text-secondary" form="like-post">
                                     <i class="far fa-thumbs-up"></i>
                                     like

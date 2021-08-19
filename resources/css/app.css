@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome.scss";
-@tailwind base;
+@import "~jquery-ui/themes/base/all.css";
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */

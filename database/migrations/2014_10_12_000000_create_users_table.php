@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('img')->nullable()->default('avatars/1.jpg');
             $table->string('bio')->nullable();
             $table->string('email')->unique();
+            $table->foreignId('role_id')->constrained();
+            $table->foreignId('country_id')->constrained();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

@@ -6,12 +6,12 @@
         <div class="row    d-flex flex-row align-items-center">
             <div class="col-12">
 
-                @forelse ($followers as $member)
+                @forelse ($user->followers as $member)
                     {{-- {{ dd($member) }} --}}
                     <div class="card mt-2">
                         <div class=" card-header d-flex flex-row align-items-center ">
                             <div class="col-6 ">
-                                <a href="{{ url("user/$member->id") }}"
+                                <a href="{{ url("profile/$member->id") }}"
                                     class="text-decoration-none d-flex flex-row align-items-center">
                                     <img width="50" class="rounded-circle" src="{{ asset("uploads/$member->img") }}"
                                         alt="">
