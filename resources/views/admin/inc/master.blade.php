@@ -76,8 +76,121 @@
 
 <body class="@yield('classes_body')" @yield('body_data')>
 
-    {{-- Body Content --}}
-    @yield('body')
+
+
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ url('/dashboard') }}" class="nav-link">Home</a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links full screen -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Starter Pages
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('/dashboard') }}" class="nav-link active ">
+                                        <i class="fa fa-home" aria-hidden="true"></i> <span class="mx-2">home</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('/dashboard/users') }}" class="nav-link active ">
+                                        <i class="fas fa-user"></i>
+                                        <span class="mx-2">Users</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+
+
+
+
+        {{-- Body Content --}}
+        @yield('body')
+
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>
+    </div>
+    <!-- ./wrapper -->
+
+
+
+
+
+
+
+
 
     {{-- Base Scripts --}}
     @if (!config('adminlte.enabled_laravel_mix'))

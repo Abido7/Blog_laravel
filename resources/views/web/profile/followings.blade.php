@@ -5,15 +5,7 @@
     <div class="container">
         <div class="row    d-flex flex-row align-items-center">
             <div class="col-12">
-                {{-- <form action="{{ url('/follow') }}" method="POST" id="follow-form">
-                    @csrf
-                    <input type="hidden" name="follow" id="hidden-follow-input">
-                </form>
-                <form action="{{ url('unfollow') }}" method="POST" style="display:none" id="unfollow-form">
-                    @csrf
-                    @method('delete')
-                    <input type="hidden" name="unfollowed" id="hidden-id">
-                </form> --}}
+
                 @forelse ($user->followings as $member)
                     <div class="card mt-2">
                         <div class=" card-header d-flex flex-row align-items-center ">
@@ -27,13 +19,16 @@
                             </div>
                             <div class="col-6 d-flex flex-row justify-content-end align-items-center">
 
-                                @if (in_array($member->id, $authFollowings))
+                                @if (Auth::user()->isFollowing($member))
 
+                                    {{-- <a href="{{ route('follow.destroy') }}">unfollow</a> --}}
                                     <button type="button" form="unfollow-form" class="btn btn-secondary"
                                         onclick="unfollow(<?= $member->id ?>);">
                                         UnFollow
                                     </button>
                                 @else
+                                    {{-- <a href="{{ route('follow.store', $member->id) }}">follow</a> --}}
+
                                     <button type="button" form="follow-form" class="btn btn-secondary"
                                         onclick="addFollow(<?= $member->id ?>);">
                                         Follow
@@ -53,6 +48,16 @@
 
                 @endforelse
             </div>
+            {{-- <form action="{{ route('user.store') }}" method="POST" id="follow-form">
+                @csrf
+                <input type="hidden" name="follow" id="hidden-follow-input">
+            </form>
+            <form action="{{ route('user.destroy', Auth::user()->id) }}" method="POST" style="display:none"
+                id="unfollow-form">
+                @csrf
+                @method('delete')
+                <input type="hidden" name="unfollowed" id="hidden-id">
+            </form> --}}
         </div>
     </div>
 @endsection

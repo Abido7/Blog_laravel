@@ -45,12 +45,22 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            // if (Auth::user()->status == false) {
+            //     // redirect(url('/'))
+            // }
             RateLimiter::hit($this->throttleKey());
-
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
+        }
+        if (!Auth::user()->is_active) {
+
+            Auth::logout();
+            session()->put('msg', 'you are blocked :(');
+
+            // dd(session('msg'));
+            return back();
         }
 
         RateLimiter::clear($this->throttleKey());
@@ -65,7 +75,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -88,6 +98,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('email')) . '|' . $this->ip();
     }
 }

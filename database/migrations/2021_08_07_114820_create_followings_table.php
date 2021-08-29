@@ -15,8 +15,8 @@ class CreateFollowingsTable extends Migration
     {
         Schema::create('followings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users', 'id');
-            $table->foreignId('following_id')->constrained('users', 'id');
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('following_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->boolean('is_following')->default(1);
             $table->timestamps();
         });

@@ -36,13 +36,14 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->where('status', '=', 1);
+        return $this->belongsTo(User::class)->where('is_active', '=', 1);
     }
 
     public function latestComment()
     {
         return $this->morphOne(Comment::class, 'commentable');
     }
+
     public function deletedComment()
     {
         return $this->morphOne(Comment::class, 'commentable');

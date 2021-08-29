@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\admin\CommentController as AdminCommentController;
+use App\Http\Controllers\admin\HomeController as AdminHomeController;
+use App\Http\Controllers\admin\LikeController as AdminLikeController;
+use App\Http\Controllers\admin\PostController as AdminPostController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MainPageController;
@@ -26,10 +31,11 @@ Route::middleware(['auth'])->group(
 
         Route::resource('/profile', ProfileController::class)->only(['index', 'show', 'update']);
 
-        Route::get('followings/{user}', [ProfileController::class, 'followings']);
-        Route::get('followers/{user}', [ProfileController::class, 'followers']);
-        Route::delete('unfollow', [ProfileController::class, 'unfollow']);
-        Route::post('/follow', [ProfileController::class, 'follow']);
+        Route::get('followings/{user}', [FollowingController::class, 'followings']);
+        Route::get('followers/{user}', [FollowingController::class, 'followers']);
+
+        Route::resource('/follow/user', FollowingController::class)->only(['store', 'destroy']);
+
 
         Route::resource('post', PostController::class)->only(['store', 'update', 'destroy', 'show']);
 
@@ -39,9 +45,23 @@ Route::middleware(['auth'])->group(
     }
 );
 
-Route::prefix('/dashboard')->middleware(['isAdmin'])->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('dashboard');
-    Route::patch('/toggle-status/{user}', [UserController::class, 'toggleStatus']);
+Route::prefix('/dashboard')->middleware(['auth', 'isAdmin'])->group(function () {
+
+    Route::get('/', [AdminHomeController::class, 'index'])->name('dashboard');
+
+    Route::get('/users/info', [UserController::class, 'info']);
+    Route::resource('/users', UserController::class)->only(['index', 'show', 'destroy']);
+
+    // toggle status
+    Route::patch('user/activate/{user}', [UserController::class, 'active']);
+    Route::patch('user/deactivate/{user}', [UserController::class, 'deactive']);
+    // toggle role
+    Route::patch('user/promote/{user}', [UserController::class, 'promote']);
+    Route::patch('user/demote/{user}', [UserController::class, 'demote']);
+
+
+    Route::resource('/posts', AdminPostController::class)->only(['index', 'destroy']);
+    Route::get('/posts/info', [AdminPostController::class, 'info']);
 });
 
 

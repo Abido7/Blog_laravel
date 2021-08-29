@@ -12,6 +12,6 @@ class MainPageController extends Controller
         $user = Auth::user()
             ->load('followings', 'followings.posts', 'followings.posts.images', 'followings.posts.latestComment', 'followings.posts.latestComment.user');
 
-        return view('main', compact('user'));
+        return view('web.home.main', compact('user'));
     }
 }

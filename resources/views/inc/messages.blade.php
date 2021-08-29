@@ -10,5 +10,5 @@
     </ul>
 @endif
 @if (session('msg'))
-    <p class="text-success text-center">{{ session('msg') }}</p>
+    <p class="text-danger text-center">{{ session('msg') }}</p>
 @endif

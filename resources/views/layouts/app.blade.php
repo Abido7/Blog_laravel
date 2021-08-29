@@ -64,6 +64,12 @@
                                     data-toggle="modal" data-target="#add-modal">
                                     New Post
                                 </button>
+                                @if (Auth::user()->role->name == 'admin')
+                                    <a class="text-decoration-none text-muted d-flex flex-row align-items-center mx-2"
+                                        href="{{ url('/dashboard') }}">
+                                        <p class="m-0">{{ __('Dashboard') }}</p>
+                                    </a>
+                                @endif
                                 <a class="text-decoration-none text-muted d-flex flex-row align-items-center mx-2"
                                     href="{{ url('/') }}">
                                     <p class="m-0">{{ __('Home') }}</p>
@@ -94,17 +100,20 @@
                                 </form>
                             </li>
                         @endguest
+
+
                     </ul>
                 </div>
             </div>
         </nav>
 
         <main class="py-4">
-            <form action="{{ url('/follow') }}" method="POST" id="follow-form">
+            <form action="{{ route('user.store') }}" method="POST" id="follow-form">
                 @csrf
                 <input type="hidden" name="follow" id="hidden-follow-input">
             </form>
-            <form action="{{ url('unfollow') }}" method="POST" style="display:none" id="unfollow-form">
+            <form action="{{ route('user.destroy', Auth::user()->id) }}" method="POST" style="display:none"
+                id="unfollow-form">
                 @csrf
                 @method('delete')
                 <input type="hidden" name="unfollowed" id="hidden-id">

@@ -19,11 +19,9 @@
                                 </a>
                             </div>
                             <div class="col-6 d-flex flex-row justify-content-end align-items-center">
-                                {{-- {{ dd($followers[1]->id) }} --}}
-                                {{-- {{ dd($authFollowers) }} --}}
                                 @if ($member->id !== Auth::user()->id)
 
-                                    @if (in_array($member->id, $authFollowings))
+                                    @if (Auth::user()->isFollowing($member))
 
                                         <button type="button" form="unfollow-form" class="btn btn-secondary"
                                             onclick="unfollow(<?= $member->id ?>);">

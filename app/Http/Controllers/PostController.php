@@ -19,7 +19,10 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post = $post->load(['comments.user', 'comments.images', 'likes']);
-        return view('post.show-post', compact('post'));
+        if ($post->user == null) {
+            return redirect(url('/'));
+        }
+        return view('web.post.show-post', compact('post'));
     }
 
     public function store(StorePostRequest $request)
@@ -64,7 +67,8 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($request->postId);
         //delete nested morph (images) relation
-        $post->deletedComment->images()->delete();
+        // dd($post->deletedComment());
+        // $post->deletedComment()->images()->delete();
         $post->delete();
         $post->deleteMorphResidual();
 

@@ -26,7 +26,7 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->where('status', '=', 1);
+        return $this->belongsTo(User::class)->where('is_active', '=', 1);
     }
 
     public function likes()

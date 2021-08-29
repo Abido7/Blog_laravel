@@ -3,76 +3,70 @@
 @section('content')
 
     <div class="container">
-        <div class="row  d-flex flex-row align-items-center">
+        <div class="row d-flex flex-row align-items-center">
             <div class="col-12">
                 {{-- admin deactivate user --}}
 
-                <div class="row">
+                <div class="bg-secondary mb-5 text-light" style="border-radius: 50% 0% 0% 50% !important;">
+                    <div class="row">
 
-                    <div class="col-md-4">
-                        <div class="position-relative">
-                            <img class="rounded w-100 position-relative" src="{{ asset("uploads/$user->img") }}" alt="">
-                            <button type="button" class="btn text-info d-flex flex-row align-items-center"
-                                data-toggle="modal" data-target="#edit-profile-modal" id="edit-info"
-                                data-bio="{{ $user->bio }}>">
-                                <i class=" fa fa-edit position-absolute" style="left:85%; top: 0; font-size: 3rem;"
-                                    aria-hidden="true"></i>
-                            </button>
-
+                        <div class="col-4">
+                            <img class="w-100" style="border-radius: 50%;" src="{{ asset("uploads/$user->img") }}" alt="">
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="bg-secondary  text-light rounded">
-                            <p class="p-2">Bio</p>
-                            <p class=" px-4">{{ $user->bio }}</p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex justify-content-start">
-                                    <p class="mx-1">
-                                        <a class="text-light text-decoration-none"
-                                            href="{{ url("followings/$user->id") }}">
-                                            Following ({{ $user->followings->count() }})
-                                        </a>
-                                    </p>
-                                    <p class="mx-2">
-                                        <a class="text-light text-decoration-none"
-                                            href="{{ url("followers/$user->id") }}">
-                                            Followers ({{ $user->followers->count() }})
-                                        </a>
-                                    </p>
-                                </div>
-                                <div>
-                                    @if (Auth::user()->role->name == 'admin')
-                                        <form action="{{ url("/user/toggle-status/$user->id") }}" method="POST"
-                                            id="status-form">
-                                            @csrf
-                                            @method('patch')
-                                        </form>
+                        <div class="col-8 d-flex flex-column justify-content-center align-items-center">
+                            <div class="p-2 w-100 ">
+                                <h2 class="h3">{{ $user->name }}</h2>
+                                <p class="">Bio</p>
+                                <p class="">{{ $user->bio }}</p>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start">
+                                        <p class="mx-1">
+                                            <a class="text-light text-decoration-none"
+                                                href="{{ url("followings/$user->id") }}">
+                                                Following ({{ $user->followings->count() }})
+                                            </a>
+                                        </p>
+                                        <p class="mx-2">
+                                            <a class="text-light text-decoration-none"
+                                                href="{{ url("followers/$user->id") }}">
+                                                Followers ({{ $user->followers->count() }})
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        @if (Auth::user()->role->name == 'admin')
 
-                                        @if ($user->status)
+                                            {{-- toggle status --}}
+                                            <form action="" method="POST" id="status-form">
+                                                @csrf
+                                                @method('patch')
+                                            </form>
 
-                                            <button type="submit" title="tap to deactivate"
-                                                class="btn text-danger d-flex flex-row align-items-center"
-                                                form="status-form">
-                                                <i class=" fa fa-eye-slash" style="left:80%; top: 20%; font-size: 2rem;"
-                                                    aria-hidden="true"></i>
-                                            </button>
 
-                                        @else
-                                            <button type="submit" title="tap to activate"
-                                                class="btn text-info d-flex flex-row align-items-center" form="status-form">
-                                                <i class=" fa fa-eye" style="left:80%; top: 20%; font-size: 2rem;"
-                                                    aria-hidden="true"></i>
-                                            </button>
+                                            @if ($user->is_active)
+
+                                                <button type="submit" title="tap to deactivate"
+                                                    class="btn text-danger d-flex flex-row align-items-center"
+                                                    form="status-form" onclick="deactivate(<?= $user->id ?>)">
+                                                    <i class=" fa fa-eye-slash" style="left:80%; top: 20%; font-size: 2rem;"
+                                                        aria-hidden="true"></i>
+                                                </button>
+
+                                            @else
+                                                <button type="submit" title="tap to activate"
+                                                    class="btn text-info d-flex flex-row align-items-center"
+                                                    form="status-form" onclick="activate(<?= $user->id ?>)">
+                                                    <i class=" fa fa-eye" style="left:80%; top: 20%; font-size: 2rem;"
+                                                        aria-hidden="true"></i>
+                                                </button>
+                                            @endif
                                         @endif
-                                    @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- {{ Auth::user()->status == false ? 'ok' : 'no' }} --}}
-                        @if (!Auth::user()->status)
-                            <p class="text-danger text-bold"> You Deactivated By Admin</p>
-                        @endif
                     </div>
+
                 </div>
 
                 @include('inc.messages')
@@ -84,7 +78,7 @@
                 </form>
 
                 @forelse ($user->posts as $post)
-                    <div class="card   m-3 m-auto">
+                    <div class="card mx-auto w-75  m-3">
                         <div class=" card-header d-flex flex-row align-items-center ">
                             <div class="col-6 d-flex flex-row align-items-center">
                                 <img width="50" class="rounded-circle" src="{{ asset("uploads/$user->img") }}" alt="">
@@ -280,6 +274,20 @@
         @endif
 
         <script>
+            var URL = window.location.origin;
+
+            function activate(id) {
+                event.preventDefault();
+                $('#status-form').attr('action', URL + '/dashboard/user/activate/' + id);
+                $('#status-form').submit();
+            }
+
+            function deactivate(id) {
+                event.preventDefault();
+                $('#status-form').attr('action', URL + '/dashboard/user/deactivate/' + id);
+                $('#status-form').submit();
+            }
+
             function deletePost(id) {
                 document.getElementById('hidden-input').setAttribute('value', id);
                 document.getElementById('delete-form').submit();

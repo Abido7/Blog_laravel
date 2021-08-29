@@ -6,21 +6,25 @@
     comments (content, likeable_id , likeable_type )
 
 
-user to activate -> deactivate ui and dashboard 
-dashboard 
- user to admin 
  admin post from user
- user status (block or deactive)
- if block make exciption
+user to activate -> deactivate ui and dashboard --------------> done 
+dashboard ----------------------------------------------------> done
+ user to admin------------------------------------------------> done
 
 in dashboard home
 today ->apex chart package (
-    user count
+    user count 
     post count
     likes count
     comments count
+    user joind today 
 )
-top posts max likes 
-how user joind today
-user select country when register -----------------------------done
-after register redrict to edit pic and bio --------------------done
+
+top posts max likes ------------------------------------------> done
+user select country when register ----------------------------> done
+after register redrict to edit pic and bio -------------------> done
+
+
+
+
+add following Model , trait(follow($user),unfollow($user))

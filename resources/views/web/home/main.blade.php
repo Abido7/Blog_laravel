@@ -12,7 +12,7 @@
                 </form> --}}
                 @forelse ($user->followings as $member)
                     @forelse ($member->posts as $post)
-                        <div class="card w-100 my-3 p-2">
+                        <div class="card w-75 mx-auto my-3 p-2">
                             <div class="row">
                                 <div class="col-6">
                                     <a class="text-decoration-none d-flex flex-row justify-content-start align-items-center"
@@ -36,7 +36,8 @@
                                     @forelse ($post->images as $image)
                                         @if (count($post->images) <= 1)
 
-                                            <img class="rounded w-100" src="{{ asset("uploads/$image->img") }}" alt="">
+                                            <img class="rounded w-75 m-auto" src="{{ asset("uploads/$image->img") }}"
+                                                alt="">
                                         @else
                                             <img class="rounded" style="max-width: 50%"
                                                 src="{{ asset("uploads/$image->img") }}" alt="">

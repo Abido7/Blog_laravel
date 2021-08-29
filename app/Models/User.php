@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\Followable;
+use App\Traits\DeactiveAndPromote;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Followable, DeactiveAndPromote;
 
     /**
      * The attributes that are mass assignable.
@@ -24,19 +26,9 @@ class User extends Authenticatable
         'img',
         'role_id',
         'country_id',
-        'status'
+        'is_active'
     ];
 
-
-    public function followings()
-    {
-        return $this->belongsToMany(User::class, 'followings', 'user_id', "following_id")->where('status', '=', 1)->withPivot('is_following')->withTimestamps()->orderByPivot('id', 'DESC');
-    }
-
-    public function followers()
-    {
-        return $this->belongsToMany(User::class, 'followings', "following_id", 'user_id')->where('status', '=', 1)->withTimestamps();
-    }
 
     public function posts()
     {

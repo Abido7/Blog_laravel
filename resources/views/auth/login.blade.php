@@ -7,9 +7,12 @@
 
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
         <form class="w-100" method="POST" action="{{ route('login') }}">
             @csrf
+            <div class="text-danger">
+                @include('inc.messages')
+                {{ session()->forget('msg') }}
+            </div>
 
             <!-- Email Address -->
             <div>
